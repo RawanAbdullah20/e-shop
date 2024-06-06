@@ -10,7 +10,6 @@ class Product extends Model
 
     protected $fillable = [
         'title',
-        'slug',
         'description',
         'price',
         'published',
@@ -23,4 +22,17 @@ class Product extends Model
         'category_id',
     ];
     use HasFactory;
+
+    function product_images()
+    {
+        return $this->hasMany(ProductImage::class);
+    }
+    function brand()
+    {
+        return $this->belongsTo(Brand::class);
+    }
+    function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

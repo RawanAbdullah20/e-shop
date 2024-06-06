@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Product;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class ProductSeeder extends Seeder
 {
@@ -19,7 +20,7 @@ class ProductSeeder extends Seeder
             Product::create(array(
                 'id' => $obj->id,
                 'title' => $obj->title,
-                'slug' => $obj->slug,
+                'slug' => Str::of($obj->slug)->slug('-'),
                 'quantity' => $obj->quantity,
                 'description' => $obj->description,
                 'price' => $obj->price,

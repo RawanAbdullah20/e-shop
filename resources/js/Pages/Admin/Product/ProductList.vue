@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { PlusIcon } from "@heroicons/vue/20/solid";
+import Dialog from "@/Pages/Shared/Dialog.vue";
 import Pagination from "@/Pages/Shared/Pagination.vue";
-import { computed } from "vue";
+import { PlusIcon } from "@heroicons/vue/20/solid";
+import CreateProduct from "@/Pages/Admin/Product/CreateProduct.vue";
+import { computed, ref } from "vue";
 const props = defineProps({
     products: {
         type: Object,
@@ -12,9 +14,13 @@ const props = defineProps({
 const productList = computed(() => {
     return props.products.data;
 });
+const isOpenAdd = ref(false);
 </script>
 
 <template>
+    <Dialog v-model:openDialog="isOpenAdd" title="Create Product" size="lg">
+        <CreateProduct @close="isOpenAdd = false" />
+    </Dialog>
     <div
         class="relative overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:rounded-lg"
     >
@@ -26,6 +32,7 @@ const productList = computed(() => {
                 <span class="dark:text-white">{{ products.total }}</span>
             </h5>
             <button
+                @click.prevent="isOpenAdd = true"
                 type="button"
                 class="flex gap-2 items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
             >
@@ -58,7 +65,7 @@ const productList = computed(() => {
                     >
                         <th
                             scope="row"
-                            class="flex items-center px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                            class="flex items-center px-4 py-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                         >
                             <!-- <img
                                 src="https://flowbite.s3.amazonaws.com/blocks/application-ui/devices/benq-ex2710q.png"

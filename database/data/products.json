@@ -1,0 +1,202 @@
+[
+    {
+        "id": 1,
+        "title": "Acer Aspire 5",
+        "slug": "acer-aspire-5",
+        "quantity": 15,
+        "description": "Acer Aspire 5 is a sleek and powerful laptop suitable for all your computing needs.",
+        "price": 499.99,
+        "brand_id": 1,
+        "category_id": 1
+    },
+    {
+        "id": 2,
+        "title": "Apple MacBook Pro",
+        "slug": "apple-macbook-pro",
+        "quantity": 10,
+        "description": "The latest Apple MacBook Pro with M1 chip delivers unprecedented performance.",
+        "price": 1299.99,
+        "brand_id": 2,
+        "category_id": 1
+    },
+    {
+        "id": 3,
+        "title": "Asus ROG Strix",
+        "slug": "asus-rog-strix",
+        "quantity": 8,
+        "description": "Asus ROG Strix is a high-performance gaming laptop designed for serious gamers.",
+        "price": 1599.99,
+        "brand_id": 3,
+        "category_id": 1
+    },
+    {
+        "id": 4,
+        "title": "Dell XPS 13",
+        "slug": "dell-xps-13",
+        "quantity": 20,
+        "description": "Dell XPS 13 is a compact and powerful laptop with an impressive display.",
+        "price": 999.99,
+        "brand_id": 4,
+        "category_id": 1
+    },
+    {
+        "id": 5,
+        "title": "HP Pavilion Desktop",
+        "slug": "hp-pavilion-desktop",
+        "quantity": 12,
+        "description": "HP Pavilion Desktop offers reliable performance for everyday computing.",
+        "price": 649.99,
+        "brand_id": 5,
+        "category_id": 2
+    },
+    {
+        "id": 6,
+        "title": "LG Gram 17",
+        "slug": "lg-gram-17",
+        "quantity": 5,
+        "description": "LG Gram 17 is an ultra-lightweight laptop with a large, vibrant display.",
+        "price": 1399.99,
+        "brand_id": 6,
+        "category_id": 1
+    },
+    {
+        "id": 7,
+        "title": "Lenovo ThinkCentre M75q",
+        "slug": "lenovo-thinkcentre-m75q",
+        "quantity": 7,
+        "description": "Lenovo ThinkCentre M75q is a compact mini PC for business and home office use.",
+        "price": 499.99,
+        "brand_id": 7,
+        "category_id": 3
+    },
+    {
+        "id": 8,
+        "title": "Apple iPad Pro",
+        "slug": "apple-ipad-pro",
+        "quantity": 18,
+        "description": "The new Apple iPad Pro with A12Z Bionic chip, perfect for productivity and creativity.",
+        "price": 799.99,
+        "brand_id": 2,
+        "category_id": 4
+    },
+    {
+        "id": 9,
+        "title": "Asus ZenBook Duo",
+        "slug": "asus-zenbook-duo",
+        "quantity": 9,
+        "description": "Asus ZenBook Duo features dual screens for enhanced multitasking and productivity.",
+        "price": 1499.99,
+        "brand_id": 3,
+        "category_id": 1
+    },
+    {
+        "id": 10,
+        "title": "Dell OptiPlex 7070",
+        "slug": "dell-optiplex-7070",
+        "quantity": 14,
+        "description": "Dell OptiPlex 7070 is a powerful desktop solution for business environments.",
+        "price": 899.99,
+        "brand_id": 4,
+        "category_id": 2
+    },
+    {
+        "id": 11,
+        "title": "Acer Nitro 5",
+        "slug": "acer-nitro-5",
+        "quantity": 13,
+        "description": "Acer Nitro 5 is a gaming laptop with powerful graphics and a fast processor.",
+        "price": 899.99,
+        "brand_id": 1,
+        "category_id": 1
+    },
+    {
+        "id": 12,
+        "title": "Apple iMac 27\"",
+        "slug": "apple-imac-27",
+        "quantity": 6,
+        "description": "The 27-inch Apple iMac delivers stunning visuals and exceptional performance.",
+        "price": 1799.99,
+        "brand_id": 2,
+        "category_id": 2
+    },
+    {
+        "id": 13,
+        "title": "Asus VivoBook 15",
+        "slug": "asus-vivobook-15",
+        "quantity": 25,
+        "description": "Asus VivoBook 15 is a versatile laptop designed for productivity and entertainment.",
+        "price": 549.99,
+        "brand_id": 3,
+        "category_id": 1
+    },
+    {
+        "id": 14,
+        "title": "Dell Inspiron 14",
+        "slug": "dell-inspiron-14",
+        "quantity": 17,
+        "description": "Dell Inspiron 14 is a compact laptop with a long battery life and solid performance.",
+        "price": 649.99,
+        "brand_id": 4,
+        "category_id": 1
+    },
+    {
+        "id": 15,
+        "title": "HP EliteDesk 800",
+        "slug": "hp-elitedesk-800",
+        "quantity": 11,
+        "description": "HP EliteDesk 800 is a high-performance desktop designed for business use.",
+        "price": 999.99,
+        "brand_id": 5,
+        "category_id": 2
+    },
+    {
+        "id": 16,
+        "title": "LG Ultra PC 17",
+        "slug": "lg-ultra-pc-17",
+        "quantity": 8,
+        "description": "LG Ultra PC 17 is a powerful and lightweight laptop with a large display.",
+        "price": 1499.99,
+        "brand_id": 6,
+        "category_id": 1
+    },
+    {
+        "id": 17,
+        "title": "Lenovo Yoga 9i",
+        "slug": "lenovo-yoga-9i",
+        "quantity": 20,
+        "description": "Lenovo Yoga 9i is a versatile 2-in-1 laptop with a high-resolution touchscreen.",
+        "price": 1399.99,
+        "brand_id": 7,
+        "category_id": 1
+    },
+    {
+        "id": 18,
+        "title": "Acer Chromebook Spin 713",
+        "slug": "acer-chromebook-spin-713",
+        "quantity": 22,
+        "description": "Acer Chromebook Spin 713 is a flexible and powerful Chromebook with a 360-degree hinge.",
+        "price": 699.99,
+        "brand_id": 1,
+        "category_id": 1
+    },
+    {
+        "id": 19,
+        "title": "Apple Mac Mini",
+        "slug": "apple-mac-mini",
+        "quantity": 14,
+        "description": "Apple Mac Mini is a compact desktop computer with the power of the M1 chip.",
+        "price": 699.99,
+        "brand_id": 2,
+        "category_id": 3
+    },
+    {
+        "id": 20,
+        "title": "Asus Chromebox 4",
+        "slug": "asus-chromebox-4",
+        "quantity": 18,
+        "description": "Asus Chromebox 4 is a mini PC running Chrome OS, perfect for web-based applications.",
+        "price": 289.99,
+        "brand_id": 3,
+        "category_id": 3
+    }
+]

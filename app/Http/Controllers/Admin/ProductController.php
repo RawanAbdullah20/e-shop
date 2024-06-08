@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Brand;
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
 use Illuminate\Http\Request;
@@ -18,6 +20,8 @@ class ProductController extends Controller
             'Admin/Product/Index',
             [
                 'products' => $products,
+                'brands' => Brand::all(),
+                'categories' => Category::all(),
 
             ]
         );
@@ -27,13 +31,21 @@ class ProductController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required',
-            'quantity' => 'required',
+            'quantity' => 'required|numeric|min:1',
             'description' => 'required',
-            'price' => 'required',
-            'brand_id' => 'required',
-            'category_id' => 'required',
+            'price' => 'required|numeric|min:0',
+            'brand_id' => 'required|exists:brands,id',
+            'category_id' => 'required|exists:categories,id',
         ]);
-        $product = Product::create($validated);
+        $product = new Product();
+        $product->title = $validated['title'];
+        $product->quantity = $validated['quantity'];
+        $product->description = $validated['description'];
+        $product->price = $validated['price'];
+        $product->brand_id = $validated['brand_id'];
+        $product->category_id = $validated['category_id'];
+        $product->slug = Str::slug($validated['title']);
+        $product->save();
 
         if ($request->hasFile('product_images')) {
             $images = $request->file('product_images');

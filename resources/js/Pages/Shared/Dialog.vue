@@ -33,7 +33,7 @@ const openDialog = defineModel<boolean | undefined>("openDialog", {
                 @click.stop=""
             >
                 <div
-                    class="relative bg-white rounded-lg shadow dark:bg-gray-700"
+                    class="relative bg-white rounded-lg shadow dark:bg-gray-800"
                 >
                     <div
                         class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600"

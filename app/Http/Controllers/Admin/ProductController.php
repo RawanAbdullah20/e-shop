@@ -10,43 +10,33 @@ use App\Models\ProductImage;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use illuminate\Support\Str;
+use App\Http\Requests\ProductStoreRequest;
 
 class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::paginate(10)->withQueryString();
+        $products = Product::with('brand', 'category', 'product_images')->paginate(10);
         return Inertia::render(
             'Admin/Product/Index',
             [
                 'products' => $products,
-                'brands' => Brand::all(),
-                'categories' => Category::all(),
 
             ]
         );
     }
 
-    public function store(Request $request)
+    public function create()
     {
-        $validated = $request->validate([
-            'title' => 'required',
-            'quantity' => 'required|numeric|min:1',
-            'description' => 'required',
-            'price' => 'required|numeric|min:0',
-            'brand_id' => 'required|exists:brands,id',
-            'category_id' => 'required|exists:categories,id',
+        return Inertia::render('Admin/Product/CreateProduct', [
+            'brands' => Brand::all(),
+            'categories' => Category::all(),
         ]);
-        $product = new Product();
-        $product->title = $validated['title'];
-        $product->quantity = $validated['quantity'];
-        $product->description = $validated['description'];
-        $product->price = $validated['price'];
-        $product->brand_id = $validated['brand_id'];
-        $product->category_id = $validated['category_id'];
-        $product->slug = Str::slug($validated['title']);
-        $product->save();
-
+    }
+    public function store(ProductStoreRequest $request)
+    {
+        $request->merge(['slug' => Str::slug($request->title)]);
+        $product = Product::create($request->all());
         if ($request->hasFile('product_images')) {
             $images = $request->file('product_images');
             foreach ($images as $image) {
@@ -60,7 +50,36 @@ class ProductController extends Controller
                 ]);
             }
         }
-
         return redirect()->route('admin.products.index')->with('success', 'Product created successfully');
+    }
+    public function edit($product_slug)
+    {
+        $product = Product::where('slug', $product_slug)->with('product_images')->first();
+        return Inertia::render('Admin/Product/EditProduct', [
+            'product' => $product,
+            'brands' => Brand::all(),
+            'categories' => Category::all(),
+        ]);
+    }
+    public  function update(Request $request, Product $product)
+    {
+        $validated = $request->validate([
+            'title' => 'required',
+            'quantity' => 'required|numeric|min:1',
+            'description' => 'required',
+            'price' => 'required|numeric|min:0',
+            'brand_id' => 'required|exists:brands,id',
+            'category_id' => 'required|exists:categories,id',
+        ]);
+        $product->update($validated);
+
+        return redirect()->back()->with('success', 'Product updated successfully');
+    }
+
+
+    public function destroy(Product $product)
+    {
+        $product->delete();
+        return redirect()->back()->with('success', 'Product deleted successfully');
     }
 }

@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import Dialog from "@/Pages/Shared/Dialog.vue";
 import Pagination from "@/Pages/Shared/Pagination.vue";
 import { PlusIcon } from "@heroicons/vue/20/solid";
-import CreateProduct from "@/Pages/Admin/Product/CreateProduct.vue";
 import { computed, ref } from "vue";
+import { Link } from "@inertiajs/vue3";
 const props = defineProps({
     products: {
         type: Object,
@@ -14,13 +13,9 @@ const props = defineProps({
 const productList = computed(() => {
     return props.products.data;
 });
-const isOpenAdd = ref(false);
 </script>
 
 <template>
-    <Dialog v-model:openDialog="isOpenAdd" title="Create Product" size="lg">
-        <CreateProduct @close="isOpenAdd = false" />
-    </Dialog>
     <div
         class="relative overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:rounded-lg"
     >
@@ -31,14 +26,14 @@ const isOpenAdd = ref(false);
                 <span class="text-gray-500 me-2">All Products:</span>
                 <span class="dark:text-white">{{ products.total }}</span>
             </h5>
-            <button
-                @click.prevent="isOpenAdd = true"
-                type="button"
-                class="flex gap-2 items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+            <Link
+                :href="route('admin.products.create')"
+                class="btn gap-2"
+                as="button"
             >
                 <PlusIcon class="size-5" />
                 Add new product
-            </button>
+            </Link>
         </div>
         <div class="overflow-x-auto">
             <table
@@ -55,6 +50,7 @@ const isOpenAdd = ref(false);
                         <th scope="col" class="px-4 py-3">Price</th>
                         <th scope="col" class="px-4 py-3">Stock</th>
                         <th scope="col" class="px-4 py-3">Published</th>
+                        <th scope="col" class="px-4 py-3"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -65,26 +61,29 @@ const isOpenAdd = ref(false);
                     >
                         <th
                             scope="row"
-                            class="flex items-center px-4 py-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                            class="flex items-center px-4 py-6 font-medium text-gray-900 whitespace-nowrap max-w-56 dark:text-white"
                         >
-                            <!-- <img
-                                src="https://flowbite.s3.amazonaws.com/blocks/application-ui/devices/benq-ex2710q.png"
-                                alt="iMac Front Image"
+                            <img
+                                v-if="product.product_images?.length"
+                                :src="`/${product.product_images[0].image}`"
+                                :alt="product.title"
                                 class="w-auto h-8 mr-3"
-                            /> -->
-                            {{ product.title }}
+                            />
+                            <p class="truncate">
+                                {{ product.title }}
+                            </p>
                         </th>
                         <td class="px-4 py-2">
                             <span
                                 class="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300"
-                                >{{ product.category_id }}</span
+                                >{{ product.category?.name }}</span
                             >
                         </td>
 
                         <td
                             class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                         >
-                            {{ product.brand_id }}
+                            {{ product.brand?.name }}
                         </td>
                         <td
                             class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -118,6 +117,26 @@ const isOpenAdd = ref(false);
                             class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                         >
                             {{ product.published }}
+                        </td>
+                        <td class="px-4 py-2 flex flex-col gap-2 text-center">
+                            <Link
+                                :href="
+                                    route('admin.products.edit', product.slug)
+                                "
+                                class="text-violet-500 hover:text-red-700"
+                            >
+                                Edit
+                            </Link>
+                            <Link
+                                :href="route('admin.products.delete', product)"
+                                method="post"
+                                preserve-scroll
+                                preserve-state
+                                as="button"
+                                class="p-0 text-red-500 hover:text-red-700"
+                            >
+                                Delete
+                            </Link>
                         </td>
                     </tr>
                 </tbody>

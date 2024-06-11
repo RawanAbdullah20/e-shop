@@ -20,6 +20,7 @@ class Product extends Model
         'deleted_by',
         'brand_id',
         'category_id',
+        'slug'
     ];
     use HasFactory;
 

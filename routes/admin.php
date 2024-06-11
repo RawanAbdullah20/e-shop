@@ -22,5 +22,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 
     Route::get('/products', [ProductController::class, 'index'])->name('admin.products.index');
 
+    Route::get('/products/create', [ProductController::class, 'create'])->name('admin.products.create');
+
     Route::post('/products/store', [ProductController::class, 'store'])->name('admin.products.store');
+
+    Route::get('/products/edit/{product_slug}', [ProductController::class, 'edit'])->name('admin.products.edit');
+    Route::post('/products/delete/{product}', [ProductController::class, 'destroy'])->name('admin.products.delete');
 });

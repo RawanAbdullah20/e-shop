@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import {
-    TagIcon,
-    ShoppingBagIcon,
-    ChartPieIcon,
-    ShoppingCartIcon,
-    UsersIcon,
     ArrowLeftEndOnRectangleIcon,
+    ChartPieIcon,
     GlobeAsiaAustraliaIcon,
+    ShoppingBagIcon,
+    ShoppingCartIcon,
+    TagIcon,
+    UsersIcon,
 } from "@heroicons/vue/24/solid";
-import { Link } from "@inertiajs/vue3";
+import { Link, router, usePage } from "@inertiajs/vue3";
 import { ref } from "vue";
 
 const sideBarList = ref([

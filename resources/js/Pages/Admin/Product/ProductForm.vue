@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import MediaUploader from "@/Pages/Shared/MediaUploader.vue";
 import { useForm, usePage } from "@inertiajs/vue3";
-import { computed, type ComputedRef } from "vue";
+import { computed, onMounted, type ComputedRef } from "vue";
 type Brand = { name: string; id: number };
-
 const emit = defineEmits<{
     (event: "submit"): void;
 }>();
@@ -13,6 +12,9 @@ const props = defineProps({
         required: false,
     },
 });
+const uploadedMediaIds: ComputedRef<number[]> = computed(
+    () => (usePage().props.flash as any).responseData as number[]
+);
 const brands: ComputedRef<Brand[]> = computed(
     () => usePage().props.brands as Brand[]
 );
@@ -26,15 +28,35 @@ const form = useForm({
     quantity: props.product?.quantity ?? "",
     category_id: props.product?.category_id ?? "",
     brand_id: props.product?.brand_id ?? "",
-    product_images: null as FileList | null,
+    media_ids: props.product?.media_ids ?? [],
 });
-
+const mediaFiles = useForm({
+    media: [] as string[],
+});
 const submit = () => {
-    emit("submit");
+    mediaFiles.post(route("admin.products.storeImage"), {
+        onSuccess: () => {
+            form.media_ids = uploadedMediaIds.value;
+            emit("submit");
+        },
+        preserveScroll: true,
+        preserveState: true,
+        onError: (errors) => {
+            console.error(errors);
+        },
+    });
 };
 
 defineExpose({
     form,
+});
+
+onMounted(() => {
+    if (props.product) {
+        props.product.media.forEach((media: any) => {
+            mediaFiles.media.push(`/${media.media}`);
+        });
+    }
 });
 </script>
 
@@ -131,7 +153,10 @@ defineExpose({
             </div>
             <div class="sm:col-span-2">
                 <label class="labelClass"> Image </label>
-                <MediaUploader v-model:images="form.product_images" />
+                <MediaUploader
+                    v-model:images="mediaFiles.media"
+                    :is-updated="true"
+                />
             </div>
         </div>
         <div class="flex justify-end w-full">

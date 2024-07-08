@@ -24,6 +24,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 
     Route::get('/products/create', [ProductController::class, 'create'])->name('admin.products.create');
 
+    Route::post('/media', [ProductController::class, 'storeImage'])->name('admin.products.storeImage');
+
     Route::post('/products/store', [ProductController::class, 'store'])->name('admin.products.store');
 
     Route::get('/products/edit/{product_slug}', [ProductController::class, 'edit'])->name('admin.products.edit');

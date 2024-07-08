@@ -18,23 +18,7 @@ const submit = () => {
     if (!form) {
         return;
     }
-    const formData = new FormData();
-    formData.append("title", form.title);
-    formData.append("description", form.description);
-    formData.append("price", form.price);
-    formData.append("quantity", form.quantity);
-    formData.append("category_id", form.category_id);
-    formData.append("brand_id", form.brand_id);
-    if (form.product_images) {
-        Array.from(form.product_images).forEach((file) => {
-            formData.append("product_images[]", file);
-        });
-    }
     form.post(route("admin.products.store"), {
-        data: formData,
-        headers: {
-            "Content-Type": "multipart/form-data",
-        },
         onSuccess: () => {
             form.reset();
         },

@@ -1,15 +1,24 @@
 <script setup lang="ts">
 import { ArrowUpCircleIcon, XMarkIcon } from "@heroicons/vue/24/solid";
 import { ComputedRef, computed } from "vue";
-const images = defineModel<FileList | null>("images", {
+const images = defineModel<File[]>("images", {
     required: true,
 });
 
+const props = defineProps({
+    isUpdated: {
+        type: Boolean,
+        required: false,
+        default: false,
+    },
+});
 const uploadImage = (e: Event) => {
-    const file = (e.target as HTMLInputElement)?.files ?? null;
-    images.value = file;
-    console.log(images.value);
+    const files = (e.target as HTMLInputElement)?.files ?? null;
+    if (files) {
+        images.value = Array.from(files);
+    }
 };
+
 const filesPreview: ComputedRef<string[]> = computed(() => {
     if (images.value) {
         return Array.from(images.value).map((file) =>
@@ -20,11 +29,7 @@ const filesPreview: ComputedRef<string[]> = computed(() => {
 });
 const deleteImage = (index: number) => {
     if (images.value) {
-        const dataTransfer = new DataTransfer();
-        const files = Array.from(images.value);
-        files.splice(index, 1);
-        files.forEach((file) => dataTransfer.items.add(file));
-        images.value = dataTransfer.files;
+        images.value.splice(index, 1);
     }
 };
 </script>

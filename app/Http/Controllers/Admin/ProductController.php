@@ -6,17 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
-use App\Models\ProductImage;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use illuminate\Support\Str;
 use App\Http\Requests\ProductStoreRequest;
+use App\Models\Media;
+use Illuminate\Support\Facades\Session;
 
 class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with('brand', 'category', 'product_images')->paginate(10);
+        $products = Product::with('brand', 'category', 'media')->paginate(10);
         return Inertia::render(
             'Admin/Product/Index',
             [
@@ -25,7 +26,6 @@ class ProductController extends Controller
             ]
         );
     }
-
     public function create()
     {
         return Inertia::render('Admin/Product/CreateProduct', [
@@ -33,28 +33,34 @@ class ProductController extends Controller
             'categories' => Category::all(),
         ]);
     }
-    public function store(ProductStoreRequest $request)
+    public function storeImage(Request $request)
     {
-        $request->merge(['slug' => Str::slug($request->title)]);
-        $product = Product::create($request->all());
-        if ($request->hasFile('product_images')) {
-            $images = $request->file('product_images');
+        $mediaIds = [];
+        if ($request->hasFile('media')) {
+            $images = $request->file('media');
             foreach ($images as $image) {
                 $imageName = time() . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
-
-                $image->move(public_path('product_images'), $imageName);
-
-                ProductImage::create([
-                    'image' => 'product_images/' . $imageName,
-                    'product_id' => $product->id,
+                $image->move(public_path('media'), $imageName);
+                $media = Media::create([
+                    'media' => 'media/' . $imageName,
                 ]);
+                $mediaIds[] = $media->id;
             }
+            return   Session::flash('responseData', $mediaIds);
+        } else {
+            return response()->json(['error' => 'No files uploaded'], 400);
         }
+    }
+    public function store(ProductStoreRequest $request)
+    {
+        Product::create($request->all());
         return redirect()->route('admin.products.index')->with('success', 'Product created successfully');
     }
+
+
     public function edit($product_slug)
     {
-        $product = Product::where('slug', $product_slug)->with('product_images')->first();
+        $product = Product::where('slug', $product_slug)->with('media')->first();
         return Inertia::render('Admin/Product/EditProduct', [
             'product' => $product,
             'brands' => Brand::all(),

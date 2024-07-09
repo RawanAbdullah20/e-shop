@@ -12,9 +12,7 @@ const props = defineProps({
         required: false,
     },
 });
-const uploadedMediaIds: ComputedRef<number[]> = computed(
-    () => (usePage().props.flash as any).responseData as number[]
-);
+
 const brands: ComputedRef<Brand[]> = computed(
     () => usePage().props.brands as Brand[]
 );
@@ -31,32 +29,25 @@ const form = useForm({
     media_ids: props.product?.media_ids ?? [],
 });
 const mediaFiles = useForm({
-    media: [] as string[],
+    media: [] as { id: number; url: string }[],
 });
 const submit = () => {
-    mediaFiles.post(route("admin.products.storeImage"), {
-        onSuccess: () => {
-            form.media_ids = uploadedMediaIds.value;
-            emit("submit");
-        },
-        preserveScroll: true,
-        preserveState: true,
-        onError: (errors) => {
-            console.error(errors);
-        },
-    });
+    form.media_ids = mediaFiles.media.map((media) => media.id);
+    emit("submit");
 };
+onMounted(() => {
+    if (props.product) {
+        mediaFiles.media = props.product.media.map((media: any) => {
+            return {
+                id: media.id,
+                url: media.url,
+            };
+        });
+    }
+});
 
 defineExpose({
     form,
-});
-
-onMounted(() => {
-    if (props.product) {
-        props.product.media.forEach((media: any) => {
-            mediaFiles.media.push(`/${media.media}`);
-        });
-    }
 });
 </script>
 
@@ -153,10 +144,7 @@ onMounted(() => {
             </div>
             <div class="sm:col-span-2">
                 <label class="labelClass"> Image </label>
-                <MediaUploader
-                    v-model:images="mediaFiles.media"
-                    :is-updated="true"
-                />
+                <MediaUploader v-model:images="mediaFiles.media" />
             </div>
         </div>
         <div class="flex justify-end w-full">

@@ -10,12 +10,16 @@ class Media extends Model
     use HasFactory;
 
     protected $fillable = [
-        'media',
+        'filename',
+        'original_filename',
+        'mime_type',
+        'path',
+        'url',
+        'size',
     ];
 
-    // public function products()
-    // {
-    //     return $this->belongsToMany(Product::class, 'product_media', 'media_id', 'product_id')
-    //         ->withTimestamps();
-    // }
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'product_media');
+    }
 }

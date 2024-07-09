@@ -1,29 +1,40 @@
 <script setup lang="ts">
 import { ArrowUpCircleIcon, XMarkIcon } from "@heroicons/vue/24/solid";
+import { useForm, usePage } from "@inertiajs/vue3";
 import { ComputedRef, computed } from "vue";
-const images = defineModel<File[]>("images", {
+
+const images = defineModel<{ id: number; url: string }[]>("images", {
     required: true,
 });
-
-const props = defineProps({
-    isUpdated: {
-        type: Boolean,
-        required: false,
-        default: false,
-    },
+const uploadedMediaIds: ComputedRef<{ id: number; url: string }[]> = computed(
+    () =>
+        (usePage().props.flash as any).responseData as {
+            id: number;
+            url: string;
+        }[]
+);
+const form = useForm({
+    media: null as File[] | null,
 });
 const uploadImage = (e: Event) => {
     const files = (e.target as HTMLInputElement)?.files ?? null;
     if (files) {
-        images.value = Array.from(files);
+        form.media = Array.from(files);
     }
+    form.post(route("admin.products.storeImage"), {
+        onSuccess: () => {
+            images.value = uploadedMediaIds.value;
+        },
+        preserveScroll: true,
+        preserveState: true,
+        onError: (errors) => {
+            console.error(errors);
+        },
+    });
 };
-
 const filesPreview: ComputedRef<string[]> = computed(() => {
     if (images.value) {
-        return Array.from(images.value).map((file) =>
-            URL.createObjectURL(file)
-        );
+        return Array.from(images.value).map((file) => file.url);
     }
     return [];
 });

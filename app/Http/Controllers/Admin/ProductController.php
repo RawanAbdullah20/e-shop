@@ -12,6 +12,7 @@ use illuminate\Support\Str;
 use App\Http\Requests\ProductStoreRequest;
 use App\Models\Media;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -33,20 +34,36 @@ class ProductController extends Controller
             'categories' => Category::all(),
         ]);
     }
+
     public function storeImage(Request $request)
     {
         $mediaIds = [];
         if ($request->hasFile('media')) {
             $images = $request->file('media');
+            $images = is_array($images) ? $images : [$images];
+
             foreach ($images as $image) {
-                $imageName = time() . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
-                $image->move(public_path('media'), $imageName);
+                $originalFilename = $image->getClientOriginalName();
+                $filename = time() . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
+                $path = $image->storeAs('public/media', $filename);
+
+                $url = Storage::url($path);
+
                 $media = Media::create([
-                    'media' => 'media/' . $imageName,
+                    'filename' => $filename,
+                    'original_filename' => $originalFilename,
+                    'mime_type' => $image->getMimeType(),
+                    'path' => $path,
+                    'url' => $url,
+                    'size' => $image->getSize(),
                 ]);
-                $mediaIds[] = $media->id;
+
+                $mediaIds[] = [
+                    'id' => $media->id,
+                    'url' => $url
+                ];
             }
-            return   Session::flash('responseData', $mediaIds);
+            return Session::flash('responseData', $mediaIds);
         } else {
             return response()->json(['error' => 'No files uploaded'], 400);
         }
@@ -67,17 +84,9 @@ class ProductController extends Controller
             'categories' => Category::all(),
         ]);
     }
-    public  function update(Request $request, Product $product)
+    public  function update(ProductStoreRequest $request, Product $product)
     {
-        $validated = $request->validate([
-            'title' => 'required',
-            'quantity' => 'required|numeric|min:1',
-            'description' => 'required',
-            'price' => 'required|numeric|min:0',
-            'brand_id' => 'required|exists:brands,id',
-            'category_id' => 'required|exists:categories,id',
-        ]);
-        $product->update($validated);
+        $product->update($request->all());
 
         return redirect()->back()->with('success', 'Product updated successfully');
     }

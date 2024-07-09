@@ -18,7 +18,7 @@ const submit = () => {
     if (!form) {
         return;
     }
-    form.post(route("admin.products.store"), {
+    form.post(route("admin.products.update"), {
         onSuccess: () => {
             form.reset();
         },

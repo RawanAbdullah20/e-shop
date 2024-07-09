@@ -7,6 +7,7 @@ import {
     ShoppingCartIcon,
     TagIcon,
     UsersIcon,
+    PhotoIcon,
 } from "@heroicons/vue/24/solid";
 import { Link, router, usePage } from "@inertiajs/vue3";
 import { ref } from "vue";
@@ -40,6 +41,11 @@ const sideBarList = ref([
     {
         icon: UsersIcon,
         title: "Users",
+        link: "admin.dashboard",
+    },
+    {
+        icon: PhotoIcon,
+        title: "Media",
         link: "admin.dashboard",
     },
 ]);

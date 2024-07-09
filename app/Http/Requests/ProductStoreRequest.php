@@ -28,8 +28,6 @@ class ProductStoreRequest extends FormRequest
             'price' => ['required', 'numeric', 'min:0'],
             'brand_id' => ['required', 'exists:brands,id'],
             'category_id' => ['required', 'exists:categories,id'],
-
-
         ];
     }
 }

@@ -52,7 +52,7 @@ class ProductController extends Controller
                 $media = Media::create([
                     'filename' => $filename,
                     'original_filename' => $originalFilename,
-                    'mime_type' => $image->getMimeType(),
+                    'mime_type' => $image->getMimeType() || 'image/jpeg',
                     'path' => $path,
                     'url' => $url,
                     'size' => $image->getSize(),
@@ -74,7 +74,6 @@ class ProductController extends Controller
         return redirect()->route('admin.products.index')->with('success', 'Product created successfully');
     }
 
-
     public function edit($product_slug)
     {
         $product = Product::where('slug', $product_slug)->with('media')->first();
@@ -84,10 +83,10 @@ class ProductController extends Controller
             'categories' => Category::all(),
         ]);
     }
-    public  function update(ProductStoreRequest $request, Product $product)
+    public  function update(ProductStoreRequest $request, $product_slug)
     {
+        $product = Product::where('slug', $product_slug)->firstOrFail();
         $product->update($request->all());
-
         return redirect()->back()->with('success', 'Product updated successfully');
     }
 

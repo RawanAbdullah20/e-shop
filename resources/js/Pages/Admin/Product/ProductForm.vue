@@ -72,7 +72,7 @@ defineExpose({
                 <input
                     type="number"
                     name="price"
-                    v-model="form.price"
+                    v-model.number="form.price"
                     id="price"
                     class="inputGray"
                     placeholder="Product price"

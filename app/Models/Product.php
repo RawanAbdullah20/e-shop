@@ -12,6 +12,7 @@ class Product extends Model
 {
 
     protected $fillable = [
+        'media_ids',
         'title',
         'description',
         'price',
@@ -23,7 +24,7 @@ class Product extends Model
         'deleted_by',
         'brand_id',
         'category_id',
-        'slug', 'media_ids'
+        'slug',
     ];
     use HasFactory;
     use HasSlug;

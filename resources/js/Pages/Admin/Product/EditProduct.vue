@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import { router } from "@inertiajs/vue3";
 import ProductForm from "@/Pages/Admin/Product/ProductForm.vue";
 import AdminLayout from "../Components/AdminLayout.vue";
 import { ref } from "vue";
 defineOptions({
     layout: AdminLayout,
 });
-defineProps({
+const props = defineProps({
     product: {
         type: Object,
         required: true,
@@ -18,10 +19,14 @@ const submit = () => {
     if (!form) {
         return;
     }
-    form.post(route("admin.products.update"), {
+    form.post(route("admin.products.update", props.product.slug), {
+        preserveState: true,
+        preserveScroll: true,
         onSuccess: () => {
             form.reset();
+            router.visit(route("admin.products.index"));
         },
+
         onError: () => {},
     });
 };

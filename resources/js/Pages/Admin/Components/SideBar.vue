@@ -41,7 +41,7 @@ const sideBarList = ref([
     {
         icon: UsersIcon,
         title: "Users",
-        link: "admin.dashboard",
+        link: "admin.users.index",
     },
     {
         icon: PhotoIcon,

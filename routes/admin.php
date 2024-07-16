@@ -6,8 +6,8 @@ use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
-
 
 Route::middleware(['redirectAdmin'])->prefix('admin')->group(
     function () {
@@ -17,7 +17,6 @@ Route::middleware(['redirectAdmin'])->prefix('admin')->group(
     }
 
 );
-
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 
@@ -38,7 +37,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
         Route::post('/update/{product}', [ProductController::class, 'update'])->name('admin.products.update');
         Route::delete('/delete/{product}', [ProductController::class, 'destroy'])->name('admin.products.delete');
     });
-
     //category
     Route::prefix('categories')->group(function () {
         Route::get('/', [CategoryController::class, 'index'])->name('admin.categories.index');
@@ -46,12 +44,18 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
         Route::post('/update/{category}', [CategoryController::class, 'update'])->name('admin.categories.update');
         Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('admin.categories.delete');
     });
-
     //brands
     Route::prefix('brands')->group(function () {
         Route::get('/', [BrandController::class, 'index'])->name('admin.brands.index');
         Route::post('/store', [BrandController::class, 'store'])->name('admin.brands.store');
         Route::post('/update/{brand}', [BrandController::class, 'update'])->name('admin.brands.update');
         Route::delete('/brands/{brand}', [BrandController::class, 'destroy'])->name('admin.brands.delete');
+    });
+
+    //users
+    Route::prefix('users')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('admin.users.index');
+        Route::get('/create', [UserController::class, 'create'])->name('admin.users.create');
+        Route::post('/store', [UserController::class, 'store'])->name('admin.users.store');
     });
 });

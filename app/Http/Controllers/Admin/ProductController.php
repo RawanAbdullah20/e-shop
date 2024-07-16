@@ -83,10 +83,10 @@ class ProductController extends Controller
             'categories' => Category::all(),
         ]);
     }
-    public  function update(ProductStoreRequest $request, $product_slug)
+
+    public function update(ProductStoreRequest $request, Product $product)
     {
-        $product = Product::where('slug', $product_slug)->firstOrFail();
-        $product->update($request->all());
+        $product->update($request->validated());
         return redirect()->back()->with('success', 'Product updated successfully');
     }
 

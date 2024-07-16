@@ -26,6 +26,7 @@ export default {
                     900: "#4c1d95",
                     950: "#2e1065",
                 },
+                secondary: "#4444e",
             },
         },
     },

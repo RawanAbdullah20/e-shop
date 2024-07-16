@@ -26,12 +26,12 @@ const sideBarList = ref([
     {
         icon: TagIcon,
         title: "Category",
-        link: "admin.dashboard",
+        link: "admin.categories.index",
     },
     {
         icon: GlobeAsiaAustraliaIcon,
         title: "Brands",
-        link: "admin.dashboard",
+        link: "admin.brands.index",
     },
     {
         icon: ShoppingCartIcon,

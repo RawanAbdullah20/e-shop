@@ -12,6 +12,12 @@ class Brand extends Model
         'name',
         'slug'
     ];
+    protected static function booted()
+    {
+        static::deleting(function ($category) {
+            $category->products()->delete();
+        });
+    }
     function products()
     {
         return $this->hasMany(Product::class);

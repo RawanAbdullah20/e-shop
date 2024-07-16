@@ -19,13 +19,13 @@ const openDialog = defineModel<boolean | undefined>("openDialog", {
         <div
             v-if="openDialog"
             @click.prevent="() => (openDialog = false)"
-            class="overflow-y-auto overflow-x-hidden flex justify-center items-center fixed top-0 bottom-0 right-0 z-50 justify-center items-center w-full dark:bg-gray-300/25 h-[calc(100%-1rem)]"
+            class="overflow-y-auto overflow-x-hidden flex justify-center items-center fixed top-0 bottom-0 right-0 z-50 justify-center items-center w-full dark:bg-gray-600/50 h-[calc(100%-1rem)]"
         >
             <div
                 class="w-full max-w-2xl m-auto"
                 :class="{
                     'max-w-md': size === 'sm',
-                    'max-w-2xl': size === 'md',
+                    'max-w-xl': size === 'md',
                     'max-w-3xl': size === 'lg',
                     'max-w-4xl': size === 'xl',
                     'max-w-screen-xl': size === 'xxl',

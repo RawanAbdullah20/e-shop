@@ -3,6 +3,8 @@
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -20,17 +22,30 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 
     Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
 
-    Route::get('/products', [ProductController::class, 'index'])->name('admin.products.index');
-
-    Route::get('/products/create', [ProductController::class, 'create'])->name('admin.products.create');
-
     Route::post('/media', [ProductController::class, 'storeImage'])->name('admin.products.storeImage');
+    //brands
+    Route::prefix('products')->group(function () {
+        Route::get('/', [ProductController::class, 'index'])->name('admin.products.index');
+        Route::get('/create', [ProductController::class, 'create'])->name('admin.products.create');
+        Route::post('/store', [ProductController::class, 'store'])->name('admin.products.store');
+        Route::get('/edit/{product_slug}', [ProductController::class, 'edit'])->name('admin.products.edit');
+        Route::post('/update/{product}', [ProductController::class, 'update'])->name('admin.products.update');
+        Route::delete('/delete/{product}', [ProductController::class, 'destroy'])->name('admin.products.delete');
+    });
 
-    Route::post('/products/store', [ProductController::class, 'store'])->name('admin.products.store');
+    //category
+    Route::prefix('categories')->group(function () {
+        Route::get('/', [CategoryController::class, 'index'])->name('admin.categories.index');
+        Route::post('/store', [CategoryController::class, 'store'])->name('admin.categories.store');
+        Route::post('/update/{category}', [CategoryController::class, 'update'])->name('admin.categories.update');
+        Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('admin.categories.delete');
+    });
 
-    Route::get('/products/edit/{product_slug}', [ProductController::class, 'edit'])->name('admin.products.edit');
-
-
-    Route::post('/products/update/{product_slug}', [ProductController::class, 'update'])->name('admin.products.update');
-    Route::post('/products/delete/{product}', [ProductController::class, 'destroy'])->name('admin.products.delete');
+    //brands
+    Route::prefix('brands')->group(function () {
+        Route::get('/', [BrandController::class, 'index'])->name('admin.brands.index');
+        Route::post('/store', [BrandController::class, 'store'])->name('admin.brands.store');
+        Route::post('/update/{brand}', [BrandController::class, 'update'])->name('admin.brands.update');
+        Route::delete('/brands/{brand}', [BrandController::class, 'destroy'])->name('admin.brands.delete');
+    });
 });

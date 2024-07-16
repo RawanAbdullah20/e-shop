@@ -19,7 +19,7 @@ const submit = () => {
     if (!form) {
         return;
     }
-    form.post(route("admin.products.update", props.product.slug), {
+    form.post(route("admin.products.update", props.product.id), {
         preserveState: true,
         preserveScroll: true,
         onSuccess: () => {

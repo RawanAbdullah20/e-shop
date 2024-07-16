@@ -39,8 +39,9 @@ defineProps({
         <ul class="flex items-center -space-x-px h-8 text-sm">
             <li v-for="(link, index) in links" :key="link.label">
                 <Link
-                    :href="link?.url ? link?.url : links[index - 1]?.url"
+                    :href="link?.url ? link?.url : links[index - 1]?.url || '/'"
                     preserveScroll
+                    :disabled="!index"
                     :class="
                         link.active
                             ? 'dark:bg-gray-900  dark:text-gray-100 '

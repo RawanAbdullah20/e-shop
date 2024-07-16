@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
@@ -58,6 +59,16 @@ class Product extends Model
         static::saved(function ($product) {
             if ($product->isDirty('media_ids')) {
                 $product->media()->sync($product->media_ids);
+            }
+        });
+        static::deleting(function ($product) {
+            $mediaToDelete = $product->media()->get();
+            $product->media()->detach();
+            foreach ($mediaToDelete as $media) {
+                if (Storage::exists($media->path)) {
+                    Storage::delete($media->path);
+                }
+                $media->delete();
             }
         });
     }

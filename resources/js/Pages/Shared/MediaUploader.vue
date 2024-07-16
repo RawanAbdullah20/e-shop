@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ArrowUpCircleIcon, XMarkIcon } from "@heroicons/vue/24/solid";
-import { useForm, usePage } from "@inertiajs/vue3";
+import { router, useForm, usePage } from "@inertiajs/vue3";
 import { ComputedRef, computed } from "vue";
 
 const images = defineModel<{ id: number; url: string }[]>("images", {
@@ -21,9 +21,9 @@ const uploadImage = (e: Event) => {
     if (files) {
         form.media = Array.from(files);
     }
-    form.post(route("admin.products.storeImage"), {
+    form.post(route("admin.media.storeImage"), {
         onSuccess: () => {
-            images.value = uploadedMediaIds.value;
+            images.value.push(...uploadedMediaIds.value);
         },
         preserveScroll: true,
         preserveState: true,
@@ -32,15 +32,23 @@ const uploadImage = (e: Event) => {
         },
     });
 };
-const filesPreview: ComputedRef<string[]> = computed(() => {
-    if (images.value) {
-        return Array.from(images.value).map((file) => file.url);
+const filesPreview: ComputedRef<{ url: string; id: number }[]> = computed(
+    () => {
+        if (images.value) {
+            return Array.from(images.value).map((file) => {
+                return { url: file.url, id: file.id };
+            });
+        }
+        return [];
     }
-    return [];
-});
-const deleteImage = (index: number) => {
+);
+const deleteImage = (index: number, id: number) => {
     if (images.value) {
         images.value.splice(index, 1);
+        router.delete(route("admin.media.delete", id), {
+            preserveScroll: true,
+            preserveState: true,
+        });
     }
 };
 </script>
@@ -79,10 +87,10 @@ const deleteImage = (index: number) => {
             v-for="(preview, index) in filesPreview"
             :key="index"
         >
-            <img :src="preview" class="h-48 object-cover max-w-full p-6" />
+            <img :src="preview.url" class="h-48 object-cover max-w-full p-6" />
             <div
                 class="absolute top-2 right-2 bg-gray-800 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                @click.prevent="deleteImage(index)"
+                @click.prevent="deleteImage(index, preview.id)"
             >
                 <XMarkIcon class="size-6" />
             </div>

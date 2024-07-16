@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -21,8 +22,13 @@ Route::middleware(['redirectAdmin'])->prefix('admin')->group(
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 
     Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+    //media
+    Route::prefix('media')->group(function () {
 
-    Route::post('/media', [ProductController::class, 'storeImage'])->name('admin.products.storeImage');
+        Route::post('/', [MediaController::class, 'storeImage'])->name('admin.media.storeImage');
+
+        Route::delete('/delete/{id}', [MediaController::class, 'destroy'])->name('admin.media.delete');
+    });
     //brands
     Route::prefix('products')->group(function () {
         Route::get('/', [ProductController::class, 'index'])->name('admin.products.index');

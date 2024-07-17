@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { useForm, usePage } from "@inertiajs/vue3";
-import { computed, onMounted, type ComputedRef } from "vue";
+import { useForm } from "@inertiajs/vue3";
 const emit = defineEmits<{
-    (event: "submit"): void;
+    (event: "close"): void;
 }>();
 const props = defineProps({
     user: {
@@ -13,15 +12,28 @@ const props = defineProps({
 const form = useForm({
     name: props.user?.name ?? "",
     email: props.user?.email ?? "",
-    password: "",
-    isAdmin: props.user?.isAdmin ?? false,
+    password: props.user ? undefined : "",
+    isAdmin: props.user?.isAdmin ? true : false,
 });
 const submit = () => {
-    emit("submit");
+    if (props.user) {
+        form.put(route("admin.users.update", props.user?.id), {
+            onSuccess: () => {
+                form.reset();
+                emit("close");
+            },
+            onError: () => {},
+        });
+        return;
+    }
+    form.post(route("admin.users.store"), {
+        onSuccess: () => {
+            form.reset();
+            emit("close");
+        },
+        onError: () => {},
+    });
 };
-defineExpose({
-    form,
-});
 </script>
 
 <template>
@@ -48,14 +60,15 @@ defineExpose({
                     name="email"
                     v-model="form.email"
                     id="email"
-                    class="inputGray"
+                    :disabled="props.user ? true : false"
+                    class="inputGray disabled:opacity-50"
                     placeholder="User Email"
                 />
                 <p class="error" v-if="form.errors.email">
                     {{ form.errors.email }}
                 </p>
             </div>
-            <div>
+            <div v-if="!user">
                 <label for="password" class="labelClass">Password</label>
                 <input
                     type="password"
@@ -70,16 +83,19 @@ defineExpose({
                 </p>
             </div>
             <div>
-                <label for="isAdmin" class="labelClass">Is Admin</label>
-                <input
-                    type="checkbox"
-                    name="isAdmin"
-                    v-model="form.isAdmin"
-                    id="isAdmin"
-                />
-                <p class="error" v-if="form.errors.isAdmin">
-                    {{ form.errors.isAdmin }}
-                </p>
+                <div class="flex items-start mb-5">
+                    <div class="flex items-center h-5">
+                        <input
+                            id="isAdmin"
+                            type="checkbox"
+                            v-model="form.isAdmin"
+                            class="w-4 h-4 border rounded dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:focus:ring-offset-gray-800"
+                        />
+                    </div>
+                    <label for="isAdmin" class="ms-2 labelClass"
+                        >Is Admin</label
+                    >
+                </div>
             </div>
             <div class="flex justify-end w-full">
                 <button
@@ -88,7 +104,7 @@ defineExpose({
                     :disabled="form.processing"
                     class="btn"
                 >
-                    {{ user ? "Edit Product" : "Create Product" }}
+                    {{ user ? "Edit User" : "Create User" }}
                 </button>
             </div>
         </div>

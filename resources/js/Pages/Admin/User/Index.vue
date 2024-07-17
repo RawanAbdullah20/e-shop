@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import BaseTable from "@/Pages/Shared/BaseTable.vue";
+import Dialog from "@/Pages/Shared/Dialog.vue";
+import UserForm from "./UserForm.vue";
+
 import {
     PlusIcon,
     ShieldCheckIcon,
     ShieldExclamationIcon,
 } from "@heroicons/vue/20/solid";
-import { ref } from "vue";
-import AdminLayout from "../Components/AdminLayout.vue";
 import { Link } from "@inertiajs/vue3";
+import { ref, type Ref } from "vue";
+import AdminLayout from "../Components/AdminLayout.vue";
 defineOptions({
     layout: AdminLayout,
 });
@@ -17,9 +20,26 @@ defineProps({
         required: true,
     },
 });
+const openCreateDialog: Ref<boolean> = ref(false);
+const openEditDialog: Ref<boolean> = ref(false);
+const user: Ref<any> = ref(null);
+const editDialog = (item: any) => {
+    user.value = item;
+    openEditDialog.value = true;
+};
 </script>
 
 <template>
+    <Dialog
+        size="md"
+        v-model:openDialog="openCreateDialog"
+        title="Add new Brand"
+    >
+        <UserForm @close="openCreateDialog = false" />
+    </Dialog>
+    <Dialog size="md" v-model:openDialog="openEditDialog" title="Edit Brand">
+        <UserForm @close="openEditDialog = false" :user="user" />
+    </Dialog>
     <BaseTable
         title="All Brands"
         :data="users"
@@ -28,17 +48,14 @@ defineProps({
             { key: 'email', label: 'Email' },
             { key: 'isAdmin', label: 'Admin' },
             { key: 'created_at', label: 'Created Date' },
+            { key: 'actions', label: ' ' },
         ]"
     >
         <template #btn>
-            <Link
-                :href="route('admin.users.create')"
-                class="btn gap-2"
-                as="button"
-            >
+            <button class="btn gap-2" @click.prevent="openCreateDialog = true">
                 <PlusIcon class="size-5" />
                 Add new User
-            </Link>
+            </button>
         </template>
 
         <template #isAdmin="{ item }">
@@ -52,16 +69,22 @@ defineProps({
         </template>
         <template #actions="{ item }">
             <div class="flex flex-col gap-2 text-center">
-                <!-- <Link
-                    :href="route('admin.users.delete', item)"
-                    method="post"
+                <p
+                    @click.prevent="editDialog(item)"
+                    class="text-violet-500 hover:text-red-700"
+                >
+                    Edit
+                </p>
+                <Link
+                    :href="route('admin.users.delete', item.id)"
+                    method="delete"
                     preserve-scroll
                     preserve-state
                     as="button"
                     class="p-0 text-red-500 hover:text-red-700"
                 >
                     Delete
-                </Link> -->
+                </Link>
             </div>
         </template>
     </BaseTable>

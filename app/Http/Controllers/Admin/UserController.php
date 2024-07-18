@@ -18,6 +18,7 @@ class UserController extends Controller
             'Admin/User/Index',
             [
                 'users' => $users,
+                'title' => 'Users Page'
             ]
         );
     }

@@ -21,6 +21,7 @@ class MediaController extends Controller
             'Admin/Media/Index',
             [
                 'medias' => $media,
+                'title' => 'Media Page'
             ]
         );
     }

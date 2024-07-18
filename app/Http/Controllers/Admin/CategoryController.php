@@ -17,6 +17,7 @@ class CategoryController extends Controller
             'Admin/Category/Index',
             [
                 'categories' => $categories,
+                'title' => 'Categories Page'
             ]
         );
     }

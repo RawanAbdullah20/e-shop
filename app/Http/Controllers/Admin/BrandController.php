@@ -16,6 +16,7 @@ class BrandController extends Controller
             'Admin/Brand/Index',
             [
                 'brands' => $brands,
+                'title' => 'Brands Page'
             ]
         );
     }

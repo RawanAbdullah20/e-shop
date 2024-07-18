@@ -18,6 +18,8 @@ class ProductController extends Controller
             'Admin/Product/Index',
             [
                 'products' => $products,
+                'title' => 'Products Page'
+
 
             ]
         );
@@ -27,6 +29,8 @@ class ProductController extends Controller
         return Inertia::render('Admin/Product/CreateProduct', [
             'brands' => Brand::all(),
             'categories' => Category::all(),
+            'title' => 'Create Product'
+
         ]);
     }
 
@@ -44,6 +48,7 @@ class ProductController extends Controller
             'product' => $product,
             'brands' => Brand::all(),
             'categories' => Category::all(),
+
         ]);
     }
 

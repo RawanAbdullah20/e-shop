@@ -26,6 +26,7 @@ class UserStoreRequest extends FormRequest
     {
         $rules = [
             'name' => ['required', 'string', 'max:255'],
+            'isAdmin' => ['required', 'boolean'],
         ];
 
         if ($this->isMethod('post')) {

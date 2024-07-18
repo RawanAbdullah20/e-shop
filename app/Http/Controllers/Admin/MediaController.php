@@ -9,10 +9,21 @@ use illuminate\Support\Str;
 
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 
 class MediaController extends Controller
 {
 
+    public function index()
+    {
+        $media = Media::paginate(12);
+        return Inertia::render(
+            'Admin/Media/Index',
+            [
+                'medias' => $media,
+            ]
+        );
+    }
     public function storeImage(Request $request)
     {
         $mediaIds = [];

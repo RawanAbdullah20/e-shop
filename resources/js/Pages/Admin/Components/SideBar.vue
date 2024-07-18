@@ -46,7 +46,7 @@ const sideBarList = ref([
     {
         icon: PhotoIcon,
         title: "Media",
-        link: "admin.dashboard",
+        link: "admin.media.index",
     },
 ]);
 </script>

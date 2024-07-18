@@ -24,7 +24,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     //media
     Route::prefix('media')->group(function () {
 
-        Route::post('/', [MediaController::class, 'storeImage'])->name('admin.media.storeImage');
+        Route::get('/', [MediaController::class, 'index'])->name('admin.media.index');
+        Route::post('/upload', [MediaController::class, 'storeImage'])->name('admin.media.storeImage');
 
         Route::delete('/delete/{id}', [MediaController::class, 'destroy'])->name('admin.media.delete');
     });
@@ -58,5 +59,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
         Route::post('/store', [UserController::class, 'store'])->name('admin.users.store');
         Route::put('/update/{user}', [UserController::class, 'update'])->name('admin.users.update');
         Route::delete('/delete/{user}', [UserController::class, 'destroy'])->name('admin.users.delete');
+        Route::post('/reset-password/{user}', [UserController::class, 'resetPassword'])->name('admin.users.reset');
     });
 });

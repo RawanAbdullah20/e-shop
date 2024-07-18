@@ -25,7 +25,7 @@ class BrandController extends Controller
             'name' => 'required|string|max:255',
         ]);
         Brand::create($request->all());
-        return redirect()->route('admin.categories.index');
+        return redirect()->back()->with('success', 'Brand Created successfully');
     }
 
     public function update(Request $request, Brand $brand)

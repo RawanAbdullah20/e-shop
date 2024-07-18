@@ -11,6 +11,7 @@ import {
 import { Link } from "@inertiajs/vue3";
 import { ref, type Ref } from "vue";
 import AdminLayout from "../Components/AdminLayout.vue";
+import ResetPassword from "./ResetPassword.vue";
 defineOptions({
     layout: AdminLayout,
 });
@@ -22,10 +23,15 @@ defineProps({
 });
 const openCreateDialog: Ref<boolean> = ref(false);
 const openEditDialog: Ref<boolean> = ref(false);
+const openResetPassword: Ref<boolean> = ref(false);
 const user: Ref<any> = ref(null);
 const editDialog = (item: any) => {
     user.value = item;
     openEditDialog.value = true;
+};
+const resetDialog = (item: any) => {
+    user.value = item;
+    openResetPassword.value = true;
 };
 </script>
 
@@ -40,8 +46,15 @@ const editDialog = (item: any) => {
     <Dialog size="md" v-model:openDialog="openEditDialog" title="Edit Brand">
         <UserForm @close="openEditDialog = false" :user="user" />
     </Dialog>
+    <Dialog
+        size="md"
+        v-model:openDialog="openResetPassword"
+        title="Reset Password"
+    >
+        <ResetPassword @close="openResetPassword = false" :user="user" />
+    </Dialog>
     <BaseTable
-        title="All Brands"
+        title="All Users"
         :data="users"
         :columns="[
             { key: 'name', label: 'User Name' },
@@ -85,6 +98,12 @@ const editDialog = (item: any) => {
                 >
                     Delete
                 </Link>
+                <p
+                    @click.prevent="resetDialog(item)"
+                    class="text-secondary hover:text-red-700"
+                >
+                    Reset Password
+                </p>
             </div>
         </template>
     </BaseTable>
